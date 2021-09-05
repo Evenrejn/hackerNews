@@ -1,13 +1,16 @@
-// import logo from "./logo.svg";
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
-import NewsPage from "./components/News/NewsPage/NewsPage";
+import NewsPageContainer from "./components/News/NewsPage/NewsPageContainer";
+import { BrowserRouter, Route } from 'react-router-dom';
+
 
 function App() {
   return (
     <div className="App">
       <Navigation />
-      <NewsPage />
+      {/* <NewsPageContainer /> */}
+      <Route path='/news/:newsId?' 
+      render={ () => <NewsPageContainer /> } />
     </div>
   );
 }
