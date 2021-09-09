@@ -9,19 +9,18 @@ import { Route } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
+      <Navigation />
       <Route exact path='/' 
-      render={ () => <><Navigation /><NewsPageContainer /></>  } />
+      render={ () => <NewsPageContainer /> } />
       <Route path='/:id' 
-      render={ (props) => <TargetNewsContainer props={props}/>  } />
-
-      {/* <Route path='/:id' 
-      render={ () => <NewsPageContainer /> } /> */}
-
-      {/* <Route path="/" exact <Navigation /> />
-      <Route path="/:id" component={Story} /> */}
+      render={ (props) => 
+      <>
+        <TargetNewsContainer props={props} />
+        <CommentsContainer props={props}/>
+      </> 
+    }/>
     </div>
   );
 }
 
 export default App;
-

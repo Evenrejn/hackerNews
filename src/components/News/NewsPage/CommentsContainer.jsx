@@ -1,68 +1,88 @@
-// import React from "react";
-// import { connect } from "react-redux";
-// // import { getTargetNews, getComments } from "../../../redux/target-news-reducer";
-// // import Preloader from "../../../common/preloader";
-// import Comments from "./Comments";
-// // import Comments from "./Comments";
-// //import CommentsContainer from "./CommentsContainer";
-
-// class CommentsContainer extends React.Component {
-//   componentDidMount() {
-//     this.props.getAllComments(this.props.props.match.params.id);
-//   }
-
-//   render() {
-    
-//     return (
-//       <>
-//         {/* {this.props.isFetching ? <Preloader /> : null} */}
-//         <TargetNews targetNews={this.props.targetNews} />
-//         <CommentsContainer comments={this.props.comments} />
-//       </>
-//     );
-//   }
-// }
-
-// let mapStateToProps = (state) => {
-//   //debugger;
-
-//   return {
-//     targetNews: state.targetNewsPage.targetNews,
-//     comments: state.commentsBlock.comments,
-//     // isFetching: state.newsPage.isFetching,
-//   };
-// };
-
-// // let WithUrlDataContainerComponent = withRouter(NewsPageContainer);
-// export default connect(mapStateToProps, { getTargetNews, getComments })(CommentsContainer);
-
-
-
-
 import React from "react";
-import { Breadcrumb, Button, Card } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { NavLink } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import Preloader from "../../../common/preloader";
+import { Button, Card } from "react-bootstrap";
+import { getComments } from "../../../redux/comments-reducer";
+import { getMoreComments } from "../../../redux/parent-comment-reducer";
+import timeConverter from "../../../utils/timeConverter/timeConverter";
+import "./Comments.css"
 
-const CommentsContainer = (props) => {
+class CommentsContainer extends React.Component {
+  componentDidMount() {
+    this.props.getComments(this.props.props.match.params.id);
+  }
 
-  //console.log(props.comments.data.kids);
-  //debugger;
-  //console.log(props.comments.data.kids);
-  return (
-    <>
-      <Card className="text-center">
-        {/* <Card.Header>{props.targetNews.by}</Card.Header> */}
-        <Card.Body>
-          <Card.Text>some text</Card.Text>
-          <Button variant="primary">Go somewhere</Button>
-        </Card.Body>
-      </Card>
-    </>
-  );
+  getMoreComments(id) {
+    this.props.getMoreComments(id);
+  }
+
+  render() {
+    return (
+      <div>
+        {this.props.isFetchingCR ? <Preloader /> : null}
+        {this.props.comment.length >= 1 ? (
+          this.props.comment.map((comment) => (
+            <>
+              <Card key={comment.id} className="text-center">
+                <Card.Header>{comment.by}</Card.Header>
+                <Card.Body>
+                  <Card.Text>{comment.text}</Card.Text>
+                  <Card.Text>added: {timeConverter(comment.time)}</Card.Text>
+                  {comment.kids ? (
+                    <Button
+                      onClick={(event) => {
+                        event.target.style.display = "none";
+                        this.getMoreComments(comment.id);
+                      }}
+                      variant="primary"
+                    >
+                      Show replies
+                    </Button>
+                  ) : null}
+                  <div>
+                    {this.props.moreComments
+                      ? this.props.moreComments.map((comm) => {
+                        return (comment.id === comm.parent) ? (
+                            <div className="commentCard">
+                              <div className="commentName"><span>{comm.by}</span></div>
+                              <div className="commentText"><span>{comm.text}</span></div>
+                              <div className="commentTime"><span>time: {timeConverter(comm.time)}</span></div>
+
+                                {comm.kids ? (
+                                <Button
+                                  onClick={(event) => {
+                                    event.target.style.display = "none";
+                                    this.getMoreComments(comm.id);
+                                  }}
+                                  variant="primary"
+                                >
+                                  Show replies
+                                </Button>
+                                ) : null}
+                            </div>) : null}
+                      )
+                      : null}
+                  </div>
+                </Card.Body>
+              </Card>
+            </>
+          ))
+        ) : (
+          <div className="noComments">No comments yet</div>
+        )}
+      </div>
+    );
+  }
+}
+
+let mapStateToProps = (state) => {
+  return {
+    comment: state.comments.comment,
+    moreComments: state.moreComment.moreComments,
+    isFetchingCR: state.comments.isFetchingCR,
+  };
 };
 
-// let WithUrlDataContainerComponent = withRouter(NewsPage);
-
-export default CommentsContainer;
+export default connect(mapStateToProps, { getComments, getMoreComments })(
+  CommentsContainer
+);

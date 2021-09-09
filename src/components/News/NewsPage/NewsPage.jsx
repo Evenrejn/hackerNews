@@ -1,42 +1,41 @@
-import React from "react";
+import { React } from "react";
 import { CardGroup, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
-// import TargetNews from "./TargetNews";
+import "./NewsPage.css";
+import timeConverter from "../../../utils/timeConverter/timeConverter";
 
 const NewsPage = (props) => {
-  // let getTargetNews = (news) => {
-  //     <TargetNews news={news} />
-  // }
-
   return (
     <>
-      {props.news.map((news) => (
-        <NavLink to={"/" + news.id} key={news.id} props={props}>
-          {/* <CardGroup onClick={getTargetNews(news)}> */}
-          <CardGroup>
-            <Card>
-              <Card.Body>
-                <Card.Title>{news.title}</Card.Title>
-                <small className="text-muted">
-                  <span>rating:</span> {news.score} | <span>comments: </span>
-                  {news.descendants || "0"}
-                </small>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">
-                  by: {news.by} | added: {news.time}
-                </small>
-              </Card.Footer>
-            </Card>
-          </CardGroup>
-        </NavLink>
-      ))}
+      {props.news.map((news) =>
+        news ? (
+          <NavLink to={"/" + news.id} key={news.id} props={props}>
+            <CardGroup>
+              <Card>
+                <Card.Body>
+                  <Card.Title>{news.title || "title"}</Card.Title>
+                  <small className="text-muted">
+                    <span>rating:</span> {news.score || "score"} |{" "}
+                    <span>comments: </span>
+                    {news.descendants || "0"}
+                  </small>
+                </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">
+                    by: {news.by || "noName"} | added:{" "}
+                    {timeConverter(news.time)}
+                  </small>
+                </Card.Footer>
+              </Card>
+            </CardGroup>
+          </NavLink>
+        ) : (
+          <div>This news was deleted</div>
+        )
+      )}
     </>
   );
 };
-
-// let WithUrlDataContainerComponent = withRouter(NewsPage);
 
 export default NewsPage;

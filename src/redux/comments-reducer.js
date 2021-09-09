@@ -1,51 +1,44 @@
-// import { newsAPI } from "../api/api";
+import { newsAPI } from "../api/api";
 
-// const SET_COMMENTS = "SET_COMMENTS";
-// // const LOADING_IS_FETCHING = "LOADING_IS_FETCHING";
-// // const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_COMMENTS = "SET_COMMENTS";
+const TOGGLE_IS_FETCHING_CR = "TOGGLE_IS_FETCHING_CR";
 
-// let initialState = {
-//     comments: [],
-//     // isLoading: true,
-//     // isFetching: true
-// }
+let initialState = {
+    comment: [],
+    isFetchingCR: true
+}
 
-// const newsReducer = (state = initialState, action) => {
-//     switch (action.type) {
-//         case SET_COMMENTS:
-//             return {
-//                 ...state, comments: action.comments
-//             }
-//         // case LOADING_IS_FETCHING:
-//         //     return {
-//         //         ...state, isLoading: action.isLoading
-//         //     }
-//         // case TOGGLE_IS_FETCHING:
-//         //         return {
-//         //             ...state, isFetching: action.isFetching
-//         //         }
-//         default: 
-//             return state;
-//     }
-// }
+const commentsReducer = (state = initialState, action) => {
 
-// export const setComments = (comments) => ({type: SET_COMMENTS, comments});
-// // export const loadingIsFetching = (isLoading) => ({type: LOADING_IS_FETCHING, isLoading});
-// //export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching});
+    switch (action.type) {
+        case SET_COMMENTS:
+            debugger;
+        //    if (action.comment.data.kids !== undefined) {
+                return {
+                    ...state, comment: [...action.comment ]
+                } 
 
-// export const getComments = (id) => {
-//     //debugger;
-//     return (dispatch) => {
-//         // dispatch(toggleIsFetching(true));
+        case TOGGLE_IS_FETCHING_CR:
+                return {
+                    ...state, isFetchingCR: action.isFetchingCR
+                }
+        default: 
+            return state;
+    }
+}
 
-//         newsAPI.getComments(id).then((comments) => {
-//             dispatch(setComments(comments));
-//             // dispatch(toggleIsFetching(false));
+export const setComments = (comment) => ({type: SET_COMMENTS, comment});
+export const toggleIsFetchingCR = (isFetchingCR) => ({type: TOGGLE_IS_FETCHING_CR, isFetchingCR});
 
-//         })
+export const getComments = (id) => {
+    //debugger;
+    return (dispatch) => {
+        dispatch(toggleIsFetchingCR(true));
+            newsAPI.getComments(id).then((comment) => {
+                dispatch(setComments(comment));
+                dispatch(toggleIsFetchingCR(false));
+            }) 
+    }
+}
 
-//     }
-
-// }
-
-// export default newsReducer;
+export default commentsReducer;
