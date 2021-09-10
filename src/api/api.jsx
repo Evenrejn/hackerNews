@@ -6,7 +6,6 @@ export const newsAPI = {
       .get("https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty")
       .then((response) => response.data.sort((a, b) => b - a))
       .then((response) => {
-        //    debugger;
         let newsArr = [];
         for (let i = 0; i <= 99; i++) {
           newsArr.push(
@@ -21,11 +20,9 @@ export const newsAPI = {
           });
         });
       });
-    // .catch(error => console.log(error))}
   },
 
   getTargetNews(news) {
-    //debugger;
     return axios
       .get(
         `https://hacker-news.firebaseio.com/v0/item/${news}.json?print=pretty`
@@ -34,7 +31,6 @@ export const newsAPI = {
   },
 
   getComments(news) {
-  //  debugger;
     return axios
       .get(
         `https://hacker-news.firebaseio.com/v0/item/${news}.json?print=pretty`
@@ -61,7 +57,6 @@ export const newsAPI = {
   },
 
   getMoreComments(news) {
-    debugger;
     return axios
       .get(
         `https://hacker-news.firebaseio.com/v0/item/${news}.json?print=pretty`

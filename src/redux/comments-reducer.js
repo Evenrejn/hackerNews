@@ -12,8 +12,6 @@ const commentsReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case SET_COMMENTS:
-            debugger;
-        //    if (action.comment.data.kids !== undefined) {
                 return {
                     ...state, comment: [...action.comment ]
                 } 
@@ -31,7 +29,6 @@ export const setComments = (comment) => ({type: SET_COMMENTS, comment});
 export const toggleIsFetchingCR = (isFetchingCR) => ({type: TOGGLE_IS_FETCHING_CR, isFetchingCR});
 
 export const getComments = (id) => {
-    //debugger;
     return (dispatch) => {
         dispatch(toggleIsFetchingCR(true));
             newsAPI.getComments(id).then((comment) => {

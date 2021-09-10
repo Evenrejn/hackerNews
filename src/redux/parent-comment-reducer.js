@@ -12,10 +12,8 @@ const parentCommentsReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case SET_MORE_COMMENTS:
-            debugger;
             return {
                  ...state.moreComments, moreComments: [...state.moreComments, ...action.moreComments.map(el => {
-                    //...state.moreComments, moreComments: [ ...action.moreComments.map(el => {
                     return el
                 })]                
             }
@@ -32,7 +30,6 @@ export const setMoreComments = (moreComments) => ({type: SET_MORE_COMMENTS, more
 export const toggleIsFetchingPCR = (isFetchingPCR) => ({type: TOGGLE_IS_FETCHING_PCR, isFetchingPCR});
 
 export const getMoreComments = (id) => {
-    debugger;
     return (dispatch) => {
         dispatch(toggleIsFetchingPCR(true));
             newsAPI.getMoreComments(id).then((moreComments) => {

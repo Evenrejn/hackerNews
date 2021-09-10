@@ -11,7 +11,6 @@ let initialState = {
 const newsReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_TARGET_NEWS:
-            debugger;
             return {
                 ...state, targetNews: action.targetNews
             }
@@ -28,7 +27,7 @@ export const setTargetNews = (targetNews) => ({type: SET_TARGET_NEWS, targetNews
 export const toggleIsFetchingTNR = (isFetchingTNR) => ({type: TOGGLE_IS_FETCHING_TNR, isFetchingTNR});
 
 export const getTargetNews = (id) => {
-    debugger;
+
     return (dispatch) => {
         dispatch(toggleIsFetchingTNR(true));
 
