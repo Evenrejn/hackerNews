@@ -1,27 +1,41 @@
-import React from "react";
+import { React } from "react";
 import { CardGroup, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { NavLink } from "react-router-dom";
+import "./NewsPage.css";
+import timeConverter from "../../../utils/timeConverter/timeConverter";
 
-function NewsPage(props) {
+const NewsPage = (props) => {
   return (
-    <CardGroup>
-      <Card>
-        {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
-        <Card.Body>
-          <Card.Title>title</Card.Title>
-          {/* <Card.Text>
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </Card.Text> */}
-          <small className="text-muted">score</small>
-        </Card.Body>
-        <Card.Footer>
-          <small className="text-muted">by</small>
-          <small className="text-muted">time</small>
-        </Card.Footer>
-      </Card>
-    </CardGroup>
+    <>
+      {props.news.map((news) =>
+        news ? (
+          <NavLink to={"/" + news.id} key={news.id} props={props}>
+            <CardGroup>
+              <Card>
+                <Card.Body>
+                  <Card.Title>{news.title || "title"}</Card.Title>
+                  <small className="text-muted">
+                    <span>rating:</span> {news.score || "score"} |{" "}
+                    <span>comments: </span>
+                    {news.descendants || "0"}
+                  </small>
+                </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">
+                    by: {news.by || "noName"} | added:{" "}
+                    {timeConverter(news.time)}
+                  </small>
+                </Card.Footer>
+              </Card>
+            </CardGroup>
+          </NavLink>
+        ) : (
+          <div>This news was deleted</div>
+        )
+      )}
+    </>
   );
-}
+};
 
 export default NewsPage;
